@@ -200,15 +200,33 @@ const mostrarAyuda = async (idChat) => {
 - Envía un enlace de una página web <b>que no cargue recursos externos</b> y será impresa como una imagen
 - Envía una foto (como foto, no como archivo) y será impresa
 
-- Envía código HTML en el siguiente formato
+- Envía código HTML. Por ejemplo:
 <code>\`\`\`html
-Acá va el HTML
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;Receipt example&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;p&gt;Hola mundo!&lt;/p&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
 \`\`\`</code>
 y será impreso como una página HTML
 
-- Envía un arreglo de operaciones JSON en el siguiente formato 
+- Envía un arreglo de operaciones codificada como JSON por ejemplo:
 <code>\`\`\`json
-Acá van las operaciones JSON
+[
+    {
+        "nombre": "EscribirTexto",
+        "argumentos": ["Hola impresora desde Telegram"]
+    }
+]
 \`\`\`</code>
  y serán ejecutadas como si estuvieras
 invocando al plugin desde un lenguaje de programación. <a href="https://gist.github.com/parzibyte/2f36655ef9d6ea8e6de73c6e09bbc735#file-documentacion-txt">Documentación</a> 
@@ -238,7 +256,13 @@ bot.on('message', async (msg) => {
                 await evaluarRespuestaYEnviarMensajeAUsuario(
                     await escribirHtml(impresoraPreferida, contenidoDeLaEntidad), idChat);
             } else if (entidad.language === "json") {
-                const operaciones = JSON.parse(contenidoDeLaEntidad);
+                let operaciones;
+                try {
+                    operaciones = JSON.parse(contenidoDeLaEntidad);
+                } catch (e) {
+                    bot.sendMessage(idChat, "Error decodificando operaciones: " + e.message);
+                    return;
+                }
                 if (!Array.isArray(operaciones)) {
                     bot.sendMessage(idChat, "Operaciones JSON deben ser un arreglo");
                     return;
