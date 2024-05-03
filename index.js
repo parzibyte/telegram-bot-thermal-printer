@@ -191,28 +191,34 @@ const evaluarRespuestaYEnviarMensajeAUsuario = async (respuestaDelPlugin, idChat
 }
 
 const mostrarAyuda = async (idChat) => {
-    await bot.sendMessage(idChat, `*Configurando plugin*
+    await bot.sendMessage(idChat, `<b>Configurando plugin</b>
 1. Necesitas ejecutar el plugin y configurarlo como se indica en: https://parzibyte.me/blog/
 2. Luego, elige tu impresora predeterminada con /impresoras, solo necesitas hacerlo una vez y a partir de ahí se usará la misma impresora para todas las operaciones
 
-*Modo de uso*
-
-- Envía texto sin formato y será impreso en la impresora seleccionada como texto normal
-- Envía un enlace de una página web *que no cargue recursos externos* y será impresa como una imagen
+<b>Modo de uso</b>
+- Todo el texto sin formato que no sea código, comando o URL será impreso como texto en la impresora térmica
+- Envía un enlace de una página web <b>que no cargue recursos externos</b> y será impresa como una imagen
 - Envía una foto (como foto, no como archivo) y será impresa
-- Envía código HTML formateado con \`\`\`html
-El código va aquí\`\`\` y será impreso como una página HTML
 
-- Envía un arreglo de operaciones JSON formateado con \`\`\`json
-Las operaciones van acá\`\`\` y serán impresas como si estuvieras
-invocando al plugin desde un lenguaje de programación. Docs: https://gist.github.com/parzibyte/2f36655ef9d6ea8e6de73c6e09bbc735#file-documentacion-txt
+- Envía código HTML en el siguiente formato
+<code>\`\`\`html
+Acá va el HTML
+\`\`\`</code>
+y será impreso como una página HTML
+
+- Envía un arreglo de operaciones JSON en el siguiente formato 
+<code>\`\`\`json
+Acá van las operaciones JSON
+\`\`\`</code>
+ y serán ejecutadas como si estuvieras
+invocando al plugin desde un lenguaje de programación. <a href="https://gist.github.com/parzibyte/2f36655ef9d6ea8e6de73c6e09bbc735#file-documentacion-txt">Documentación</a> 
 
 El ancho máximo para todas las imágenes impresas es ${MAXIMO_ANCHO} es y el algoritmo seleccionado es ${ALGORITMO_RASTER_BIT_IMAGE}, pero puede ser 0, 1 o 2. Mira: https://parzibyte.me/blog/2024/01/23/actualizacion-plugin-esc-pos-v3-3-0-algoritmos-imagenes/
 
 También puedes usar los siguientes comandos: 
 /impresoras elige la impresora preferida para el usuario
 /version muestra la versión del plugin. Útil para conocer el estado de ejecución del plugin
-/ayuda muestra este mensaje de ayuda`, { parse_mode: "Markdown" });
+/ayuda muestra este mensaje de ayuda`, { parse_mode: "HTML", disable_web_page_preview: true, });
 }
 
 bot.on('message', async (msg) => {
