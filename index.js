@@ -8,6 +8,9 @@ const serial = process.env.LICENCIA_PLUGIN;
 let idsUsuarioConImpresoraPreferida = {};
 const ALGORITMO_RASTER_BIT_IMAGE = 0;
 const MAXIMO_ANCHO = 380;
+/*
+Lista de operaciones ESC POS disponibles: https://parzibyte.me/http-esc-pos-desktop-docs/es/
+*/
 fs.readFile(nombreArchivoPreferencias, (err, data) => {
     if (err) {
         return;
@@ -66,6 +69,7 @@ const enviarOperaciones = async (nombreImpresora, operaciones) => {
 
 
 const imprimirImagen = async (nombreImpresora, url) => {
+    // Lista de operaciones ESC POS disponibles: https://parzibyte.me/http-esc-pos-desktop-docs/es/
 
     return await enviarOperaciones(nombreImpresora, [
         {
@@ -77,7 +81,7 @@ const imprimirImagen = async (nombreImpresora, url) => {
 
             nombre: "DescargarImagenDeInternetEImprimir",
             argumentos: [
-                url, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE,
+                url, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE, true,
             ]
         },
         {
@@ -109,6 +113,7 @@ const escribirTexto = async (nombreImpresora, texto) => {
 }
 
 const descargarHtmlEImprimir = async (nombreImpresora, url) => {
+    // Lista de operaciones ESC POS disponibles: https://parzibyte.me/http-esc-pos-desktop-docs/es/
     return await enviarOperaciones(nombreImpresora, [{
         nombre: "Iniciar",
         argumentos: [],
@@ -116,7 +121,7 @@ const descargarHtmlEImprimir = async (nombreImpresora, url) => {
     {
         nombre: "GenerarImagenAPartirDePaginaWebEImprimir",
         argumentos: [
-            url, MAXIMO_ANCHO, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE,
+            url, MAXIMO_ANCHO, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE, false,
         ]
     },
     {
@@ -129,9 +134,10 @@ const descargarHtmlEImprimir = async (nombreImpresora, url) => {
 }
 
 const escribirHtml = async (nombreImpresora, html) => {
+    // Lista de operaciones ESC POS disponibles: https://parzibyte.me/http-esc-pos-desktop-docs/es/
     return await enviarOperaciones(nombreImpresora, [{
         nombre: "GenerarImagenAPartirDeHtmlEImprimir",
-        argumentos: [html, MAXIMO_ANCHO, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE],
+        argumentos: [html, MAXIMO_ANCHO, MAXIMO_ANCHO, ALGORITMO_RASTER_BIT_IMAGE, false],
     },
     {
         nombre: "Feed",
