@@ -188,10 +188,10 @@ Sistema operativo: *${version.sistemaOperativo}*`, { parse_mode: "Markdown" });
 }
 
 const evaluarRespuestaYEnviarMensajeAUsuario = async (respuestaDelPlugin, idChat) => {
-    if (respuestaDelPlugin === true) {
+    if (respuestaDelPlugin.ok === true) {
         await bot.sendMessage(idChat, "Impreso correctamente");
     } else {
-        await bot.sendMessage(idChat, "Error: " + respuestaDelPlugin);
+        await bot.sendMessage(idChat, "Error: " + respuestaDelPlugin.message);
 
     }
 }
